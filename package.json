@@ -23,5 +23,8 @@
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^2.0.0",
     "run-sequence": "^1.2.0"
+  },
+  "dependencies": {
+    "winston": "^2.2.0"
   }
 }
