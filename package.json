@@ -25,6 +25,8 @@
     "run-sequence": "^1.2.0"
   },
   "dependencies": {
+    "compression": "^1.6.2",
+    "express": "^4.13.4",
     "nconf": "^0.8.4",
     "winston": "^2.2.0"
   }
