@@ -1,0 +1,35 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+    },
+    "plugins": [],
+    "env": {
+        "es6": true,
+        "node": true,
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules": {
+
+        "indent": ["error", 4],
+        "no-var": "error",
+        "no-const-assign": "error",
+        "no-undef": "error",
+        "camelcase": ["error", { "properties": "always" }],
+
+        "semi": "warn",
+        "keyword-spacing": ["warn", { "before": true, "after": true }],
+        "object-curly-spacing": ["warn", "always", {
+            "objectsInObjects": false,
+            "arraysInObjects": false
+        }],
+        "space-before-blocks": "warn",
+        "no-class-assign": "warn",
+        "no-func-assign": "warn",
+    }
+}
