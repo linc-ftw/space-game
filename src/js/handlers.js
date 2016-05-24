@@ -21,7 +21,9 @@ class Handlers {
         req.authenticatedUser = user;
         if (user) {
             log.debug('Add header', AUTH_TOKEN_HEADER_NAME);
-            res.set(AUTH_TOKEN_HEADER_NAME, user.getAuthToken());
+            const token = user.getAuthToken();
+            res.set(AUTH_TOKEN_HEADER_NAME, token);
+            return token;
         } else if (res) {
             log.debug('Remove header', AUTH_TOKEN_HEADER_NAME);
             res.removeHeader(AUTH_TOKEN_HEADER_NAME);
@@ -71,7 +73,7 @@ class Handlers {
         let [result, user] = this.api.userLogin(req.body.username, req.body.password);
 
         if (result.ok && user) {
-            this.setAuthenticatedUser(req, res, user);
+            result.token = this.setAuthenticatedUser(req, res, user);
         }
 
         res.json(result);
