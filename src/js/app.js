@@ -14,7 +14,7 @@ const handlers = new Handlers(api);
 
 const handler = handlerFunc => handlerFunc.bind(handlers);
 const secureHandler = handlerFunc => function(req, res) {
-    handlers.requireAuthenticatedUser(req);
+    handlers.requireAuthenticatedUser(req, res);
     handlerFunc.call(handlers, req, res);
 };
 
@@ -33,7 +33,6 @@ app.post('/user/login', handler(handlers.userLogin));
 // Authenticated endpoints
 
 app.get('/user', secureHandler(handlers.userInfo));
-app.post('/user/logout', secureHandler(handlers.userLogout));
 
 app.get('*', handler(handlers.catchAll));
 

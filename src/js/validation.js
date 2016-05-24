@@ -28,4 +28,9 @@ export function validateUsername(username, throwError = true) {
 }
 validate.username = validateUsername;
 
+export function validatePassword(password, throwError = true) {
+    return validate(password, /\w{3,}/, 'Password must be at least 3 characters', throwError);
+}
+validate.password = validatePassword;
+
 export { validate };

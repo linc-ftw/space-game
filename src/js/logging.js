@@ -5,7 +5,8 @@ function getTransports() {
         new (winston.transports.Console)({
             colorize: true,
             json: false,
-            humanReadableUnhandledException: true
+            humanReadableUnhandledException: true,
+            level: process.env.DEBUG ? 'debug' : 'info'
         })
     ];
 }

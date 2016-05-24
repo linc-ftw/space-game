@@ -1,5 +1,4 @@
-import uuid from 'node-uuid';
-
+import log from './logging';
 import { validate } from './validation';
 import { User } from './user';
 
@@ -23,61 +22,59 @@ class Api {
         this.users = [];
     }
 
-    addUser(username) {
-        let user = new User(username);
+    addUser(username, password) {
+        log.debug('api.addUser', username, password);
+        let user = new User(username, password);
         this.users.push(user);
         return user;
     }
 
     getUserByUsername(username) {
+        log.debug('api.getUserByUsername', username);
         return this.users
             .filter(user => user.username === username)[0];
     }
 
-    getUserBySessionId(sessionId) {
+    getUserById(id) {
+        log.debug('api.getUserById', id);
         return this.users
-            .filter(user => user.sessionId === sessionId)[0];
+            .filter(user => user.id === id)[0];
     }
 
-    userRegister(username) {
+    userRegister(username, password) {
+        log.debug('api.userRegister', username, password);
+
         validate.username(username);
+        validate.password(password);
 
         let existingUser = this.getUserByUsername(username);
 
         if (existingUser) {
+            log.debug('failure');
             return failure(`User ${username} already exists`);
         }
 
-        this.addUser(username);
+        this.addUser(username, password);
+
+        log.debug('success');
         return success(`User ${username} created`);
     }
 
-    createUserSessionId(user) {
-        let sessionId = uuid.v4();
-        user.setSessionId(sessionId);
-        return sessionId;
-    }
+    userLogin(username, password) {
+        log.debug('api.userLogin', username, password);
 
-    userLogin(username) {
         validate.username(username);
+        validate.password(password);
 
         let user = this.getUserByUsername(username);
 
-        if (!user) {
-            return failure(`User ${username} not found`);
+        if (!user || !user.password.equals(password)) {
+            log.debug('failure');
+            return [failure(`Login failed`), null];
         }
 
-        let sessionId = this.createUserSessionId(user);
-
-        return success({
-            username: user.username,
-            sessionId: sessionId
-        });
-    }
-
-    userLogout(user) {
-        user.logout();
-        return success(`User ${user.username} logged out`);
+        log.debug('success');
+        return [success(), user];
     }
 
 }
