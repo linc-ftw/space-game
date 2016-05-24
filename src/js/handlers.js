@@ -61,14 +61,14 @@ class Handlers {
     userRegister(req, res) {
         log.debug('handlers.userRegister');
 
-        let result = this.api.userRegister(req.query.username, req.query.password);
+        let result = this.api.userRegister(req.body.username, req.body.password);
         res.json(result);
     }
 
     userLogin(req, res) {
         log.debug('handlers.userLogin');
 
-        let [result, user] = this.api.userLogin(req.query.username, req.query.password);
+        let [result, user] = this.api.userLogin(req.body.username, req.body.password);
 
         if (result.ok && user) {
             this.setAuthenticatedUser(req, res, user);
