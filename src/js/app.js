@@ -12,30 +12,21 @@ const app = express();
 const api = new Api();
 const handlers = new Handlers(api);
 
-const handler = handlerFunc => handlerFunc.bind(handlers);
-const secureHandler = handlerFunc => function(req, res) {
-    handlers.requireAuthenticatedUser(req, res);
-    handlerFunc.call(handlers, req, res);
-};
-
 process.on('uncaughtException', err => log.error(err));
 
-app.use(handler(handlers.enableCors));
+function bindHandler(fn) { return fn.bind(handlers); }
+
+app.use(handlers.enableCors);
 app.use(compress());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Unauthenticated endpoints
+app.get('/user', bindHandler(handlers.requireAuthenticatedUser), bindHandler(handlers.userInfo));
+app.post('/user/register', bindHandler(handlers.userRegister));
+app.post('/user/login', bindHandler(handlers.userLogin));
 
-app.post('/user/register', handler(handlers.userRegister));
-app.post('/user/login', handler(handlers.userLogin));
+app.get('*', bindHandler(handlers.catchAll));
 
-// Authenticated endpoints
-
-app.get('/user', secureHandler(handlers.userInfo));
-
-app.get('*', handler(handlers.catchAll));
-
-app.use(handler(handlers.error));
+app.use(bindHandler(handlers.error));
 
 export default app;

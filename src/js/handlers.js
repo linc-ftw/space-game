@@ -79,13 +79,15 @@ class Handlers {
         res.json(result);
     }
 
-    requireAuthenticatedUser(req, res) {
+    requireAuthenticatedUser(req, res, next) {
         log.debug('handlers.requireAuthenticatedUser');
 
         let user = this.getAuthenticatedUser(req, res);
         if (!user) {
             throw new NotAuthenticatedError('Authenticated user required');
         }
+
+        next();
     }
 
     catchAll(req, res) {
