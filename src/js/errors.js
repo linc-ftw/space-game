@@ -1,5 +1,29 @@
-export class NotAuthenticatedError extends Error {}
+import { validate } from './validation';
 
-export class ValidationError extends Error {}
+class HttpError extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        validate.mustBeDefined(statusCode);
+        this.statusCode = statusCode;
+        this.isHttpError = true;
+    }
+}
 
-export class ArgumentError extends Error {}
+export class NotAuthenticatedError extends HttpError {
+    constructor(message) {
+        super(message, 401);
+    }
+}
+
+export class ValidationError extends HttpError {
+    constructor(message) {
+        super(message, 500);
+    }
+}
+
+
+export class ArgumentError extends HttpError {
+    constructor(message) {
+        super(message, 500);
+    }
+}
