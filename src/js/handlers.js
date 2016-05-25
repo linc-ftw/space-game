@@ -122,8 +122,8 @@ class Handlers {
 
     statusCodeForError(error) {
 
-        if (error instanceof NotAuthenticatedError) {
-            return 401;
+        if (error.isHttpError) {
+            return error.statusCode;
         }
 
         log.debug('No handling defined for error, defaulting to HTTP 500');
