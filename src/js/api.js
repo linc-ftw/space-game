@@ -11,7 +11,7 @@ function success(data) {
 
 function failure(data) {
     if (typeof data === 'string') {
-        return success({ message: data });
+        return failure({ message: data });
     }
     return Object.assign({ error: true }, data);
 }
