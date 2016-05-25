@@ -33,4 +33,9 @@ export function validatePassword(password, throwError = true) {
 }
 validate.password = validatePassword;
 
+export function mustBeDefined(value, throwError = true) {
+    return validate(value, value => typeof value !== 'undefined', 'Value must be defined', throwError);
+}
+validate.mustBeDefined = mustBeDefined;
+
 export { validate };
